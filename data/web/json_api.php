@@ -234,13 +234,8 @@ if (isset($_GET['query'])) {
           process_add_return(mailbox('add', 'time_limited_alias', $attr));
         break;
         case "user-api-key":
-          $result = user_api('add', $attr);
-          if ($result === false) {
-            echo isset($_SESSION['return']) ? json_encode($_SESSION['return']) : json_encode(array('type' => 'error', 'msg' => 'Cannot generate user API key'));
-          }
-          else {
-            echo json_encode(array('type' => 'success', 'msg' => 'user_api_key_generated', 'key' => $result));
-          }
+          user_api('add', $attr);
+          process_add_return(!empty($_SESSION['return']) && end($_SESSION['return'])['type'] === 'success');
         break;
         case "relayhost":
           process_add_return(relayhost('add', $attr));
